@@ -1,7 +1,7 @@
 # TUP Blackjack - Back-End
 
 ## Librerías usadas:
-express jsonwebtoken cors
+express jsonwebtoken cors nodemon
 
 ## Para correr
 `npm install`  
