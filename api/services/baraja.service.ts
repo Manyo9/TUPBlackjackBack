@@ -1,34 +1,52 @@
 import { Carta } from "../models/carta";
 
 export class BarajaService {
+
     prepararMazo(): Carta[] {
-        let mazo: Carta[];
-        for (let palo = 0; palo < 4; palo++) {
+        let mazo: Carta[] = [];
+        for (let p = 0; p < 4; p++) {
             for (let numValor = 1; numValor < 14; numValor++) {
                 switch (numValor) {
                     case 11:
-                      stringValor = 'J';
-                      puntosCarta = 10;
+                      mazo.push({
+                        valorCarta: 'J',
+                        valorNumerico: 10,
+                        palo: p
+                      })
                       break;
                     case 12:
-                      stringValor = 'Q';
-                      puntosCarta = 10;
+                      mazo.push({
+                        valorCarta: 'Q',
+                        valorNumerico: 10,
+                        palo: p
+                      })
                       break;
                     case 13:
-                      stringValor = 'K';
-                      puntosCarta = 10;
+                      mazo.push({
+                        valorCarta: 'K',
+                        valorNumerico: 10,
+                        palo: p
+                      })
                       break;
                     case 1:
-                      stringValor = 'A';
-                      puntosCarta = 11;
+                      mazo.push({
+                        valorCarta: 'A',
+                        valorNumerico: 11,
+                        palo: p
+                      })
                       break;
               
                     default:
-                      stringValor = numValor.toString();
-                      puntosCarta = numValor;
+                      mazo.push({
+                        valorCarta: numValor.toString(),
+                        valorNumerico: numValor,
+                        palo: p
+                      })
                       break;
                   }   
             }
         }
+        return mazo;
     }
+
 }  
