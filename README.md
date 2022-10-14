@@ -1,7 +1,7 @@
 # TUP Blackjack - Back-End
 
 ## Librerías usadas:
-En desarrollo: typescript @types/express nodemon ts-node-dev
+En desarrollo: typescript @types/express nodemon ts-node-dev @types/jsonwebtoken
 
 express jsonwebtoken cors 
 
