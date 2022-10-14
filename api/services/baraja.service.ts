@@ -12,28 +12,28 @@ export class BarajaService {
                         valorCarta: 'J',
                         valorNumerico: 10,
                         palo: p
-                      })
+                      });
                       break;
                     case 12:
                       mazo.push({
                         valorCarta: 'Q',
                         valorNumerico: 10,
                         palo: p
-                      })
+                      });
                       break;
                     case 13:
                       mazo.push({
                         valorCarta: 'K',
                         valorNumerico: 10,
                         palo: p
-                      })
+                      });
                       break;
                     case 1:
                       mazo.push({
                         valorCarta: 'A',
                         valorNumerico: 11,
                         palo: p
-                      })
+                      });
                       break;
               
                     default:
@@ -41,7 +41,7 @@ export class BarajaService {
                         valorCarta: numValor.toString(),
                         valorNumerico: numValor,
                         palo: p
-                      })
+                      });
                       break;
                   }   
             }
