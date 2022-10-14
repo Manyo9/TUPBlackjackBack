@@ -17,33 +17,33 @@ export class BarajaService {
     }
       
     private prepararMazo(): Carta[] {
-        let deck: Carta[] = [];
+        let mazo: Carta[] = [];
         for (let p = 0; p < 4; p++) {
             for (let numValor = 1; numValor < 14; numValor++) {
                 switch (numValor) {
                     case 11:
-                      deck.push({
+                      mazo.push({
                         valorCarta: 'J',
                         valorNumerico: 10,
                         palo: p
                       });
                       break;
                     case 12:
-                      deck.push({
+                      mazo.push({
                         valorCarta: 'Q',
                         valorNumerico: 10,
                         palo: p
                       });
                       break;
                     case 13:
-                      deck.push({
+                      mazo.push({
                         valorCarta: 'K',
                         valorNumerico: 10,
                         palo: p
                       });
                       break;
                     case 1:
-                      deck.push({
+                      mazo.push({
                         valorCarta: 'A',
                         valorNumerico: 11,
                         palo: p
@@ -51,7 +51,7 @@ export class BarajaService {
                       break;
               
                     default:
-                      deck.push({
+                      mazo.push({
                         valorCarta: numValor.toString(),
                         valorNumerico: numValor,
                         palo: p
@@ -60,7 +60,7 @@ export class BarajaService {
                   }   
             }
         }
-        return deck;
+        return mazo;
     }
 
     prepararVariosMazos(n: number): Carta[]{
