@@ -1,10 +1,12 @@
 # TUP Blackjack - Back-End
 
 ## Librerías usadas:
-express jsonwebtoken cors nodemon typescript @types/express @types/node @types/cors
+En desarrollo: typescript @types/express nodemon ts-node-dev
+
+express jsonwebtoken cors 
 
 ## Para correr
-`npm install`    
+`npm install`  
 `npm run dev` para correr el servidor de desarrollo
 
 ## A futuro, si se llega a poder implementar una DB
