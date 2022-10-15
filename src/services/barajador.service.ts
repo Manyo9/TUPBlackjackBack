@@ -1,6 +1,6 @@
 import { Carta } from "../models/carta";
 
-export class BarajaService {
+export class BarajadorService {
 
     mezclarFisherYates(mazo: Carta[]): Carta[] {
         let indice: number = mazo.length
