@@ -25,17 +25,17 @@ export class Partida {
     this.empezo = false;
     this.turnoCroupier = false;
     this.terminoJuego = false;
-    this.generarMazo(2);
-    
   }
 
   getMazo = (): Carta[] => this.mazo;
 
   getUnaCarta = (): Carta | undefined => this.mazo.pop();
 
-  generarMazo = (n: number): void => { this.mazo = barajador.prepararVariosMazos(n); }
+  generarMazo(n: number): void {
+    this.mazo = barajador.prepararVariosMazos(n);
+  }
 
-  mezclar = (): void => { this.mazo = barajador.mezclarFisherYates(this.mazo); }
+  mezclar = (): void => { barajador.mezclarFisherYates(this.mazo); }
 
   tieneBlackjack = (jugador: Jugador): boolean => jugador.puntos === 21 && jugador.mano.length === 2
 
@@ -76,5 +76,6 @@ export class Partida {
       return { idGanador: -1, razon: "Ambos se pasaron" }
     }
   }
-  
 }
+
+export type PartidaDTO = Pick<Partida, 'idPartida' | 'jugador'| 'croupier'| 'empezo' | 'turnoCroupier'| 'terminoJuego'>;

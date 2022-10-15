@@ -2,7 +2,7 @@ import { Carta } from "../models/carta";
 
 
 
-export function mezclarFisherYates(mazo: Carta[]): Carta[] {
+export function mezclarFisherYates(mazo: Carta[]): void {
   let indice: number = mazo.length
   let rand: number;
   while (indice != 0) {
@@ -12,8 +12,6 @@ export function mezclarFisherYates(mazo: Carta[]): Carta[] {
     [mazo[indice], mazo[rand]] = [
       mazo[rand], mazo[indice]];
   }
-
-  return mazo;
 }
       
 export function prepararMazo(): Carta[] {
@@ -66,8 +64,8 @@ export function prepararMazo(): Carta[] {
 export function prepararVariosMazos(n: number): Carta[]{
   let muchosMazos: Carta[] = [];
   for (let i = 0; i < n; i++) {
-    muchosMazos.concat(prepararMazo());
+    muchosMazos = muchosMazos.concat(prepararMazo());
   }
-  let mazoFinal: Carta[] = mezclarFisherYates(muchosMazos);
-  return mazoFinal;
+  mezclarFisherYates(muchosMazos);
+  return muchosMazos;
 }

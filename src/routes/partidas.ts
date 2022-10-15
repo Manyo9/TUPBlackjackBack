@@ -16,8 +16,8 @@ router.get('/', verifyToken, (req: any, res: any) => {
 
 router.get('/:id', (req: any, res: any) => {
     const x = casinoService.getById(req.params['id'])
-    if (x) {
-        res.status(200).json({ "ok": true, "resultado": x });
+    if (x.length > 0) {
+        res.status(200).json({ "ok": true, "resultado": x[0] });
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
     }
@@ -49,7 +49,6 @@ router.get('/:id/pedirCarta', (req: any, res: any) => {
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
     }
-
 });
 
 function verifyToken(req: any, res: any, next: any) {
