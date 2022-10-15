@@ -29,11 +29,22 @@ export class Partida {
 
   getMazo = (): Carta[] => this.mazo;
 
-  getUnaCarta = (): Carta | undefined => this.mazo.pop();
-
-  generarMazo(n: number): void {
-    this.mazo = barajador.prepararVariosMazos(n);
+  getUnaCarta = (): Carta | undefined => {
+    let c;
+    if (this.mazo.length > 0) {
+      c = this.mazo.pop()
+    }
+    if (c) {
+      this.jugador.mano.push(c);
+      return c;
+    } else {
+      return undefined;
+    }
   }
+
+  generarMazo = (n: number): void => { this.mazo = barajador.prepararVariosMazos(n); }
+
+  plantarse = (): void => { this.jugador.terminoJugada; }
 
   mezclar = (): void => { barajador.mezclarFisherYates(this.mazo); }
 
@@ -78,4 +89,4 @@ export class Partida {
   }
 }
 
-export type PartidaDTO = Pick<Partida, 'idPartida' | 'jugador'| 'croupier'| 'empezo' | 'turnoCroupier'| 'terminoJuego'>;
+export type PartidaDTO = Pick<Partida, 'idPartida' | 'jugador' | 'croupier' | 'empezo' | 'turnoCroupier' | 'terminoJuego'>;

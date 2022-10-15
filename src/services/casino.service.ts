@@ -14,15 +14,15 @@ export class CasinoService {
             return this._instancia;
         } else {
             return this._instancia;
-        }   
+        }
     }
 
     getPartidas = (): PartidaDTO[] => this.partidas;
 
     getById = (id: number): PartidaDTO[] => {
         const p = this.partidas.filter(p => p.idPartida == id)
-        return p.map(({idPartida, jugador, croupier, empezo, turnoCroupier, terminoJuego}) => {
-            return {idPartida, jugador, croupier, empezo, turnoCroupier, terminoJuego}
+        return p.map(({ idPartida, jugador, croupier, empezo, turnoCroupier, terminoJuego }) => {
+            return { idPartida, jugador, croupier, empezo, turnoCroupier, terminoJuego }
         })
     }
 
@@ -33,7 +33,7 @@ export class CasinoService {
             new Jugador(idJugador, nombre, [], 0, false, false, false),
             new Jugador(0, 'Croupier', [], 0, true, false, false)
         )
-        partida.generarMazo(2);
+        partida.generarMazo(1);
         this.partidas.push(partida);
         return partida.idPartida;
     }
@@ -46,15 +46,30 @@ export class CasinoService {
             this.partidas[indice].terminoJuego = true;
             return true;
         }
-
     }
+
     pedirCarta(id: number): Carta | undefined {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id && p.turnoCroupier == false});
+        const indice = this.partidas.findIndex(p => { return p.idPartida == id && p.jugador.terminoJugada == false });
         if (indice == -1) {
             return undefined;
         }
         let c = this.partidas[indice].getUnaCarta();
-        return c;
+        if (c) {
+            return c;
+        } else {
+            this.partidas[indice].generarMazo(2);
+            c = this.partidas[indice].getUnaCarta();
+            return c;
+        }
+    }
 
+    plantarJugador(id: number): boolean {
+        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        if (indice == -1) {
+            return false;
+        } else {
+            this.partidas[indice].plantarse();
+            return true;
+        }
     }
 }
