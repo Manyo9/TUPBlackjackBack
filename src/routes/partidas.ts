@@ -25,7 +25,7 @@ router.get('/:id', (req: any, res: any) => {
 
 router.post('/nueva', verifyToken, (req: any, res: any) => {
     const id = req.data[0].id;
-    const n = req.data[0].nombre;
+    const n = req.data[0].usuario;
     const partidaId = casinoService.newPartida(id, n);
     const x = casinoService.getById(partidaId);
     if(x.length > 0){

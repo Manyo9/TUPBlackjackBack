@@ -73,4 +73,8 @@ export class CasinoService {
             return true;
         }
     }
+
+    generarJugadaCroupier(id: number) {
+        
+    }
 }
