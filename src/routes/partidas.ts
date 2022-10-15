@@ -30,11 +30,22 @@ router.post('/nueva', verifyToken, (req: any, res: any) => {
     res.status(200).json({ "ok": true, "mensaje": `Creada con éxito con id ${partidaId}` });
 });
 
-router.post('/terminar/:id', (req: any, res: any) => {
+router.post('/:id/terminar', (req: any, res: any) => {
     const id = req.params['id'];
     const bool = casinoService.terminarPartida(id);
     if (bool) {
         res.status(200).json({ "ok": true, "mensaje": `Se terminó la partida con ${req.params['id']}` });
+    } else {
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+    }
+
+});
+
+router.get('/:id/pedirCarta', (req: any, res: any) => {
+    const id = req.params['id'];
+    const carta = casinoService.pedirCarta(id);
+    if (carta) {
+        res.status(200).json({ "ok": true, "resultado": carta });
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
     }
