@@ -54,14 +54,7 @@ export class CasinoService {
         if (indice == -1) {
             return undefined;
         }
-        let c = this.partidas[indice].getUnaCarta();
-        if (c) {
-            return c;
-        } else {
-            this.partidas[indice].generarMazo(2);
-            c = this.partidas[indice].getUnaCarta();
-            return c;
-        }
+        return this.partidas[indice].getUnaCarta();
     }
 
     plantarJugador(id: number): boolean {
@@ -74,7 +67,10 @@ export class CasinoService {
         }
     }
 
-    generarJugadaCroupier(id: number) {
-        
+    generarJugadaCroupier(id: number): any {
+        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        if (indice == -1) {
+            return undefined;
+        }
     }
 }

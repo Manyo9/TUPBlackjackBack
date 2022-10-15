@@ -27,59 +27,64 @@ export class Partida {
     this.terminoJuego = false;
   }
 
-  getUnaCarta = (): Carta | undefined => {
+  getUnaCarta = (): any => {
     let c;
     if (this.mazo.length > 0) {
-      c = this.mazo.pop()
-    }
-    if (c) {
-      this.jugador.mano.push(c);
-      return c;
+      c = this.mazo.pop();
     } else {
-      return undefined;
+      this.generarMazo(2);
+      c = this.mazo.pop();
     }
+    return c;
   }
 
   empezar = (): void => { this.empezo = true}
 
   generarMazo = (n: number): void => { this.mazo = barajador.prepararVariosMazos(n); }
 
-  plantarse = (): void => { this.jugador.terminoJugada = true; }
+  plantarse = (): void => { this.jugador.plantar(); }
 
   mezclar = (): void => { barajador.mezclarFisherYates(this.mazo); }
 
   tieneBlackjack = (jugador: Jugador): boolean => jugador.puntos === 21 && jugador.mano.length === 2
 
-  determinarGanador(jugador: Jugador, croupier: Jugador): any {
-    if (!jugador.perdio && croupier.perdio) {
+  generarJugadaCroupier() {
+    this.turnoCroupier = true;
+    while (!this.croupier.terminoJugada) {
+      this.croupier.agregarCarta(this.getUnaCarta());
+    }
+  }
+
+  determinarGanador(): any {
+    if (!this.jugador.perdio && this.croupier.perdio) {
       //gano jugador porque se pasó el croupier
-      return { idGanador: jugador.usuarioId, razon: "Croupier se pasó" }
+      return { idGanador: this.jugador.usuarioId, razon: "Croupier se pasó" }
 
-    } else if (jugador.perdio && !croupier.perdio) {
+    } else if (this.jugador.perdio && !this.croupier.perdio) {
       //gano croupier porque se pasó el jugador
-      return { idGanador: croupier.usuarioId, razon: "Jugador se pasó" }
+      return { idGanador: this.croupier.usuarioId, razon: "Jugador se pasó" }
 
-    } else if (!jugador.perdio && !croupier.perdio) {
+    } else if (!this.jugador.perdio && !this.croupier.perdio) {
       //ninguno se pasó
       // chequeo de blackjack
-      if (jugador.puntos == croupier.puntos) {
+      if (this.jugador.puntos == this.croupier.puntos) {
         //igual puntaje
-        if (this.tieneBlackjack(jugador) && !this.tieneBlackjack(croupier)) {
+        if (this.tieneBlackjack(this.jugador) && !this.tieneBlackjack(this.croupier)) {
           //gana jugador por blackjack
-          return { idGanador: jugador.usuarioId, razon: "Jugador tiene blackjack" }
-        } else if (!this.tieneBlackjack(jugador) && this.tieneBlackjack(croupier)) {
+          return { idGanador: this.jugador.usuarioId, razon: "Jugador tiene blackjack" }
+        } else if (!this.tieneBlackjack(this.jugador) && this.tieneBlackjack(this.croupier)) {
           // gana croupier por blackjack
-          return { idGanador: croupier.usuarioId, razon: "Croupier tiene blackjack" }
+          return { idGanador: this.croupier.usuarioId, razon: "Croupier tiene blackjack" }
         } else {
           //empate
           return { idGanador: -1, razon: "Igualdad de puntos" }
         }
-      } else if (jugador.puntos > croupier.puntos) {
+      } else if (this.jugador.puntos > this.croupier.puntos) {
         //gana jugador por mayor puntaje
-        return { idGanador: jugador.usuarioId, razon: "Jugador tiene mayor puntaje" }
+        return { idGanador: this.jugador.usuarioId, razon: "Jugador tiene mayor puntaje" }
       } else {
         //gana croupier por mayor puntaje
-        return { idGanador: croupier.usuarioId, razon: "Croupier tiene mayor puntaje" }
+        return { idGanador: this.croupier.usuarioId, razon: "Croupier tiene mayor puntaje" }
       }
 
     } else {
