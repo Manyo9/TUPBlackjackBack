@@ -34,6 +34,7 @@ export class CasinoService {
             new Jugador(0, 'Croupier', [], 0, true, false, false)
         )
         partida.generarMazo(1);
+        partida.empezar();
         this.partidas.push(partida);
         return partida.idPartida;
     }

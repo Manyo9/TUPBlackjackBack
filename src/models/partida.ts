@@ -27,8 +27,6 @@ export class Partida {
     this.terminoJuego = false;
   }
 
-  getMazo = (): Carta[] => this.mazo;
-
   getUnaCarta = (): Carta | undefined => {
     let c;
     if (this.mazo.length > 0) {
@@ -42,9 +40,11 @@ export class Partida {
     }
   }
 
+  empezar = (): void => { this.empezo = true}
+
   generarMazo = (n: number): void => { this.mazo = barajador.prepararVariosMazos(n); }
 
-  plantarse = (): void => { this.jugador.terminoJugada; }
+  plantarse = (): void => { this.jugador.terminoJugada = true; }
 
   mezclar = (): void => { barajador.mezclarFisherYates(this.mazo); }
 
