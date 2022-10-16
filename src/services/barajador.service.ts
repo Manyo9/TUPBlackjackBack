@@ -23,7 +23,7 @@ export function prepararMazo(): Carta[] {
           mazo.push({
             valorCarta: 'J',
             valorNumerico: 10,
-            palo: p
+            palo: p + 1
           });
           break;
         case 12:
