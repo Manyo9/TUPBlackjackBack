@@ -30,21 +30,21 @@ export function prepararMazo(): Carta[] {
           mazo.push({
             valorCarta: 'Q',
             valorNumerico: 10,
-            palo: p
+            palo: p + 1
           });
           break;
         case 13:
           mazo.push({
             valorCarta: 'K',
             valorNumerico: 10,
-            palo: p
+            palo: p + 1
           });
           break;
         case 1:
           mazo.push({
             valorCarta: 'A',
             valorNumerico: 11,
-            palo: p
+            palo: p + 1
           });
           break;
 
@@ -52,7 +52,7 @@ export function prepararMazo(): Carta[] {
           mazo.push({
             valorCarta: numValor.toString(),
             valorNumerico: numValor,
-            palo: p
+            palo: p + 1
           });
           break;
       }
