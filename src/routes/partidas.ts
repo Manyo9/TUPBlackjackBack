@@ -25,11 +25,11 @@ router.get('/:id', (req: any, res: any) => {
 
 router.post('/nueva', verifyToken, (req: any, res: any) => {
     const id = req.data[0].id;
-    const n = req.data[0].usuario;
-    const partidaId = casinoService.newPartida(id, n);
-    const x = casinoService.getById(partidaId);
-    if(x.length > 0){
-        res.status(200).json({ "ok": true, "mensaje": `Creada con éxito con id ${partidaId}`, "resultado":x[0]});
+    const nombre = req.data[0].usuario;
+    const partidaId = casinoService.newPartida(id, nombre);
+    const partida = casinoService.getById(partidaId);
+    if(partida.length > 0){
+        res.status(200).json({ "ok": true, "mensaje": `Creada con éxito con id ${partidaId}`, "resultado":partida[0]});
     } else {
         res.status(500).json({ "ok": false, "mensaje": `Error al crear partida`});
     }
@@ -38,8 +38,8 @@ router.post('/nueva', verifyToken, (req: any, res: any) => {
 
 router.post('/:id/terminar', (req: any, res: any) => {
     const id = req.params['id'];
-    const bool = casinoService.terminarPartida(id);
-    if (bool) {
+    const exito = casinoService.terminarPartida(id);
+    if (exito) {
         res.status(200).json({ "ok": true, "mensaje": `Se terminó la partida con ${req.params['id']}` });
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
@@ -59,8 +59,8 @@ router.get('/:id/pedirCarta', (req: any, res: any) => {
 
 router.post('/:id/plantarse', (req: any, res: any) => {
     const id = req.params['id'];
-    const b = casinoService.plantarJugador(id);
-    if (b) {
+    const exito = casinoService.plantarJugador(id);
+    if (exito) {
         res.status(200).json({ "ok": true, "mensaje": "Te plantaste con éxito"});
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
@@ -69,9 +69,9 @@ router.post('/:id/plantarse', (req: any, res: any) => {
 
 router.get('/:id/jugadaCroupier', (req: any, res: any) => {
     const id = req.params['id'];
-    const c = casinoService.generarJugadaCroupier(id);
-    if (c) {
-        res.status(200).json({ "ok": true, "resultado": c[0]});
+    const croupier = casinoService.generarJugadaCroupier(id);
+    if (croupier) {
+        res.status(200).json({ "ok": true, "resultado": croupier[0]});
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
     }
@@ -79,9 +79,9 @@ router.get('/:id/jugadaCroupier', (req: any, res: any) => {
 
 router.get('/:id/primeraCartaCroupier', (req: any, res: any) => {
     const id = req.params['id'];
-    const c = casinoService.obtenerPrimeraCroupier(id);
-    if (c) {
-        res.status(200).json({ "ok": true, "resultado": c});
+    const carta = casinoService.obtenerPrimeraCroupier(id);
+    if (carta) {
+        res.status(200).json({ "ok": true, "resultado": carta});
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
     }
