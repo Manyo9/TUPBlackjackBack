@@ -61,3 +61,5 @@ export class Jugador {
         this.terminoJugada = true;
     }
 }
+
+export type CroupierDTO = Pick<Jugador, 'mano' | 'puntos' | 'perdio'>;

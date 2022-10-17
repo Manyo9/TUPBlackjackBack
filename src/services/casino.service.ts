@@ -1,5 +1,5 @@
 import { Carta } from '../models/carta';
-import { Jugador } from '../models/jugador';
+import { CroupierDTO, Jugador } from '../models/jugador';
 import { Partida, PartidaDTO } from '../models/partida';
 
 export class CasinoService {
@@ -67,10 +67,17 @@ export class CasinoService {
         }
     }
 
-    generarJugadaCroupier(id: number): any {
+    generarJugadaCroupier(id: number): CroupierDTO[] | undefined {
         const indice = this.partidas.findIndex(p => { return p.idPartida == id });
         if (indice == -1) {
             return undefined;
         }
+
+        this.partidas[indice].generarJugadaCroupier();
+        const p = this.partidas.filter(p => p.idPartida == id)
+        const c: CroupierDTO[] = [p[0].croupier];
+        return c.map(({ mano, puntos, perdio }) => {
+            return { mano, puntos, perdio }
+        })
     }
 }

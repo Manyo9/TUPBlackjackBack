@@ -48,7 +48,7 @@ export class Partida {
 
   tieneBlackjack = (jugador: Jugador): boolean => jugador.puntos === 21 && jugador.mano.length === 2
 
-  generarJugadaCroupier() {
+  generarJugadaCroupier(){
     this.turnoCroupier = true;
     while (!this.croupier.terminoJugada) {
       this.croupier.agregarCarta(this.getUnaCarta());
