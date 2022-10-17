@@ -36,17 +36,6 @@ router.post('/nueva', verifyToken, (req: any, res: any) => {
     
 });
 
-router.post('/:id/terminar', (req: any, res: any) => {
-    const id = req.params['id'];
-    const exito = casinoService.terminarPartida(id);
-    if (exito) {
-        res.status(200).json({ "ok": true, "mensaje": `Se terminó la partida con ${req.params['id']}` });
-    } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
-    }
-
-});
-
 router.get('/:id/pedirCarta', (req: any, res: any) => {
     const id = req.params['id'];
     const carta = casinoService.pedirCarta(id);
@@ -70,7 +59,7 @@ router.post('/:id/plantarse', (req: any, res: any) => {
 router.get('/:id/jugadaCroupier', (req: any, res: any) => {
     const id = req.params['id'];
     const croupier = casinoService.generarJugadaCroupier(id);
-    if (croupier) {
+    if (croupier && croupier.length > 0) {
         res.status(200).json({ "ok": true, "resultado": croupier[0]});
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
@@ -82,6 +71,26 @@ router.get('/:id/primeraCartaCroupier', (req: any, res: any) => {
     const carta = casinoService.obtenerPrimeraCroupier(id);
     if (carta) {
         res.status(200).json({ "ok": true, "resultado": carta});
+    } else {
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+    }
+});
+
+router.post('/:id/nuevaRonda', (req: any, res: any) => {
+    const id = req.params['id'];
+    const partida = casinoService.jugarNuevaRonda(id);
+    if (partida && partida.length > 0) {
+        res.status(200).json({ "ok": true, "resultado": partida[0]});
+    } else {
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+    }
+});
+
+router.post('/:id/terminarPartida', (req: any, res: any) => {
+    const id = req.params['id'];
+    const exito = casinoService.terminarPartida(id);
+    if (exito) {
+        res.status(200).json({ "ok": true, "mensaje": "Gracias por jugar!"});
     } else {
         res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
     }

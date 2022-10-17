@@ -21,8 +21,8 @@ export class CasinoService {
 
     getById = (id: number): PartidaDTO[] => {
         const p = this.partidas.filter(p => p.idPartida == id)
-        return p.map(({ idPartida, jugador, croupier, empezo, turnoCroupier, terminoJuego }) => {
-            return { idPartida, jugador, croupier, empezo, turnoCroupier, terminoJuego }
+        return p.map(({ idPartida, jugador, croupier, activo, turnoCroupier }) => {
+            return { idPartida, jugador, croupier, activo, turnoCroupier }
         })
     }
 
@@ -37,16 +37,6 @@ export class CasinoService {
         partida.empezar();
         this.partidas.push(partida);
         return partida.idPartida;
-    }
-
-    terminarPartida(id: number): boolean {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
-        if (indice == -1) {
-            return false;
-        } else {
-            this.partidas[indice].terminoJuego = true;
-            return true;
-        }
     }
 
     pedirCarta(id: number): Carta | undefined {
@@ -89,5 +79,25 @@ export class CasinoService {
         return c.map(({ mano, puntos, perdio }) => {
             return { mano, puntos, perdio }
         })
+    }
+
+    jugarNuevaRonda(id: number): PartidaDTO[] | undefined {
+        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        if (indice == -1) {
+            return undefined;
+        }
+
+        this.partidas[indice].nuevaRonda();
+        return this.getById(id);
+    } 
+
+    terminarPartida(id: number): boolean {
+        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        if (indice == -1) {
+            return false;
+        }
+
+        this.partidas[indice].terminar();
+        return true;
     }
 }

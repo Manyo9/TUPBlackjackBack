@@ -60,6 +60,13 @@ export class Jugador {
     plantar(): void {
         this.terminoJugada = true;
     }
+
+    reiniciarJugador(): void {
+        this.terminoJugada = false;
+        this.perdio = false;
+        this.puntos = 0;
+        this.mano = [];
+    }
 }
 
-export type CroupierDTO = Pick<Jugador, 'mano' | 'puntos' | 'perdio'>;
+export type CroupierDTO = Pick<Jugador, 'mano' | 'puntos' | 'perdio' >;

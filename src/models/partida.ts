@@ -7,10 +7,8 @@ export class Partida {
   mazo: Carta[];
   jugador: Jugador;
   croupier: Jugador;
-  empezo: boolean;
+  activo: boolean;
   turnoCroupier: boolean;
-  terminoJuego: boolean;
-
 
   constructor(
     idPartida: number,
@@ -22,9 +20,8 @@ export class Partida {
     this.mazo = mazo;
     this.jugador = jugador;
     this.croupier = croupier;
-    this.empezo = false;
+    this.activo = false;
     this.turnoCroupier = false;
-    this.terminoJuego = false;
   }
 
   getUnaCarta = (): any => {
@@ -38,7 +35,9 @@ export class Partida {
     return c;
   }
 
-  empezar = (): void => { this.empezo = true}
+  empezar = (): void => { this.activo = true; }
+
+  terminar = (): void => { this.activo = false; }
 
   generarMazo = (n: number): void => { this.mazo = barajador.prepararVariosMazos(n); }
 
@@ -97,6 +96,12 @@ export class Partida {
       return { idGanador: -1, razon: "Ambos se pasaron" }
     }
   }
+
+  nuevaRonda(){
+    this.jugador.reiniciarJugador();
+    this.croupier.reiniciarJugador();
+    this.turnoCroupier = false;
+  }
 }
 
-export type PartidaDTO = Pick<Partida, 'idPartida' | 'jugador' | 'croupier' | 'empezo' | 'turnoCroupier' | 'terminoJuego'>;
+export type PartidaDTO = Pick<Partida, 'idPartida' | 'jugador' | 'croupier' | 'activo' | 'turnoCroupier'>;
