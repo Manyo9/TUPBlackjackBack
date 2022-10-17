@@ -100,4 +100,13 @@ export class CasinoService {
         this.partidas[indice].terminar();
         return true;
     }
+
+    obtenerGanador(id: number): any {
+        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        if (indice == -1) {
+            return false;
+        }
+
+        return this.partidas[indice].determinarGanador();
+    }
 }
