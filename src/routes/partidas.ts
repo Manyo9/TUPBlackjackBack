@@ -77,6 +77,16 @@ router.get('/:id/jugadaCroupier', (req: any, res: any) => {
     }
 });
 
+router.get('/:id/primeraCartaCroupier', (req: any, res: any) => {
+    const id = req.params['id'];
+    const c = casinoService.obtenerPrimeraCroupier(id);
+    if (c) {
+        res.status(200).json({ "ok": true, "resultado": c});
+    } else {
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+    }
+});
+
 function verifyToken(req: any, res: any, next: any) {
     if (!req.headers.authorization) return res.status(401).json({ "ok": false, "mensaje": "No autorizado" });
     let token = req.headers.authorization.split(' ')[1];

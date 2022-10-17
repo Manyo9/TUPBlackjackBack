@@ -67,6 +67,16 @@ export class CasinoService {
         }
     }
 
+    obtenerPrimeraCroupier(id: number): Carta | undefined {
+        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        if (indice == -1) {
+            return undefined;
+        }
+
+        const c = this.partidas[indice].obtenerPrimeraCroupier();
+        return c;
+    }
+
     generarJugadaCroupier(id: number): CroupierDTO[] | undefined {
         const indice = this.partidas.findIndex(p => { return p.idPartida == id });
         if (indice == -1) {

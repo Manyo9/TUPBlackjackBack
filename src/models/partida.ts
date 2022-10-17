@@ -55,6 +55,11 @@ export class Partida {
     }
   }
 
+  obtenerPrimeraCroupier(): Carta{
+    this.croupier.agregarCarta(this.getUnaCarta());
+    return this.croupier.mano[0];
+  }
+
   determinarGanador(): any {
     if (!this.jugador.perdio && this.croupier.perdio) {
       //gano jugador porque se pasó el croupier
