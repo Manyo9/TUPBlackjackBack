@@ -162,8 +162,8 @@ router.get('/partidaActiva', verifyToken, (req: any, res: any) => {
     }
 
     const resultado = casinoService.getPartidaActiva(req.data.id);
-    if (resultado) {
-        res.status(200).json({ "ok": true, "resultado": resultado});
+    if (resultado && resultado.length > 0) {
+        res.status(200).json({ "ok": true, "resultado": resultado[0]});
     } else {
         res.status(404).json({ "ok": false, "mensaje": `El usuario no tiene partida activa.` });
     }
