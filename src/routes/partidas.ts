@@ -7,14 +7,23 @@ const router = express.Router();
 const casinoService: CasinoService = CasinoService.getInstancia();
 
 router.get('/', verifyToken, (req: any, res: any) => {
-    if (req.data[0].rol == 'admin') {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+    if (req.data.rol == 'admin') {
         res.status(200).json({ "ok": true, "resultado": casinoService.getPartidas() });
     } else {
         res.status(403).json({ "ok": false, "mensaje": "Usted no tiene los permisos requeridos para acceder a este recurso." });
     }
-})
+});
 
-router.get('/:id', (req: any, res: any) => {
+router.get('/:id', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
     const x = casinoService.getById(req.params['id'])
     if (x.length > 0) {
         res.status(200).json({ "ok": true, "resultado": x[0] });
@@ -24,8 +33,13 @@ router.get('/:id', (req: any, res: any) => {
 });
 
 router.post('/nueva', verifyToken, (req: any, res: any) => {
-    const id = req.data[0].id;
-    const nombre = req.data[0].usuario;
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
+    const id = req.data.id;
+    const nombre = req.data.usuario;
     const partidaId = casinoService.newPartida(id, nombre);
     const partida = casinoService.getById(partidaId);
     if(partida.length > 0){
@@ -36,7 +50,12 @@ router.post('/nueva', verifyToken, (req: any, res: any) => {
     
 });
 
-router.get('/:id/pedirCarta', (req: any, res: any) => {
+router.get('/:id/pedirCarta', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
     const id = req.params['id'];
     const carta = casinoService.pedirCarta(id);
     if (carta) {
@@ -46,7 +65,12 @@ router.get('/:id/pedirCarta', (req: any, res: any) => {
     }
 });
 
-router.post('/:id/plantarse', (req: any, res: any) => {
+router.post('/:id/plantarse', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
     const id = req.params['id'];
     const exito = casinoService.plantarJugador(id);
     if (exito) {
@@ -56,7 +80,12 @@ router.post('/:id/plantarse', (req: any, res: any) => {
     }
 });
 
-router.get('/:id/jugadaCroupier', (req: any, res: any) => {
+router.get('/:id/jugadaCroupier', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
     const id = req.params['id'];
     const croupier = casinoService.generarJugadaCroupier(id);
     if (croupier && croupier.length > 0) {
@@ -66,7 +95,12 @@ router.get('/:id/jugadaCroupier', (req: any, res: any) => {
     }
 });
 
-router.get('/:id/primeraCartaCroupier', (req: any, res: any) => {
+router.get('/:id/primeraCartaCroupier', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
     const id = req.params['id'];
     const carta = casinoService.obtenerPrimeraCroupier(id);
     if (carta) {
@@ -76,7 +110,12 @@ router.get('/:id/primeraCartaCroupier', (req: any, res: any) => {
     }
 });
 
-router.post('/:id/nuevaRonda', (req: any, res: any) => {
+router.post('/:id/nuevaRonda', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
     const id = req.params['id'];
     const partida = casinoService.jugarNuevaRonda(id);
     if (partida && partida.length > 0) {
@@ -86,7 +125,12 @@ router.post('/:id/nuevaRonda', (req: any, res: any) => {
     }
 });
 
-router.post('/:id/terminarPartida', (req: any, res: any) => {
+router.post('/:id/terminarPartida', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
     const id = req.params['id'];
     const exito = casinoService.terminarPartida(id);
     if (exito) {
@@ -96,7 +140,12 @@ router.post('/:id/terminarPartida', (req: any, res: any) => {
     }
 });
 
-router.get('/:id/obtenerGanador', (req: any, res: any) => {
+router.get('/:id/obtenerGanador', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+
     const id = req.params['id'];
     const resultado = casinoService.obtenerGanador(id);
     if (resultado) {
@@ -106,14 +155,34 @@ router.get('/:id/obtenerGanador', (req: any, res: any) => {
     }
 });
 
+router.get('/partidaActiva', verifyToken, (req: any, res: any) => {
+    if (!req.data){
+        res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
+        return;
+    }
+    
+    const resultado = casinoService.getPartidaActiva(req.data.id);
+    if (resultado) {
+        res.status(200).json({ "ok": true, "resultado": resultado});
+    } else {
+        res.status(404).json({ "ok": false, "mensaje": `El usuario no tiene partida activa.` });
+    }
+});
+
 function verifyToken(req: any, res: any, next: any) {
     if (!req.headers.authorization) return res.status(401).json({ "ok": false, "mensaje": "No autorizado" });
     let token = req.headers.authorization.split(' ')[1];
 
     if (token === '' || token === null) {
-        return res.status(401).json({ "ok": false, "mensaje": "Token inválido" });
+        return res.status(401).json({ "ok": false, "mensaje": "Token vacío" });
     }
-    let contenido = jwt.verify(token, 'blackjacksecretkey'); // aprender como manejar si se pasa un token invalido
+    let contenido = jwt.verify(token, 'blackjacksecretkey', (err: any, decoded:any ) => {
+        if (err){
+            return undefined;
+        } else {
+            return decoded;
+        }
+    });
     req.data = contenido;
     next();
 }
