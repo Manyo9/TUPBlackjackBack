@@ -44,7 +44,7 @@ export class CasinoService {
         if (indice == -1) {
             return undefined;
         }
-        return this.partidas[indice].getUnaCarta();
+        return this.partidas[indice].tomarCartaJugador();
     }
 
     plantarJugador(id: number): boolean {
@@ -108,5 +108,9 @@ export class CasinoService {
         }
 
         return this.partidas[indice].determinarGanador();
+    }
+
+    getPartidaActiva(idUsuario: number){
+
     }
 }

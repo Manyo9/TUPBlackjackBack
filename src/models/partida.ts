@@ -45,7 +45,10 @@ export class Partida {
 
   mezclar = (): void => { barajador.mezclarFisherYates(this.mazo); }
 
-  tomarCartaJugador = (): void => { this.jugador.agregarCarta(this.getUnaCarta()); }
+  tomarCartaJugador = (): Carta => {
+    const carta = this.getUnaCarta();
+    this.jugador.agregarCarta(carta);
+    return carta }
 
   tieneBlackjack = (jugador: Jugador): boolean => jugador.puntos === 21 && jugador.mano.length === 2
 
