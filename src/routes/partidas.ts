@@ -18,7 +18,7 @@ router.get('/', verifyToken, (req: any, res: any) => {
     }
 });
 
-router.get('/:id', verifyToken, (req: any, res: any) => {
+router.get('/porId/:id', verifyToken, (req: any, res: any) => {
     if (!req.data){
         res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
         return;
@@ -160,7 +160,7 @@ router.get('/partidaActiva', verifyToken, (req: any, res: any) => {
         res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
         return;
     }
-    
+
     const resultado = casinoService.getPartidaActiva(req.data.id);
     if (resultado) {
         res.status(200).json({ "ok": true, "resultado": resultado});
