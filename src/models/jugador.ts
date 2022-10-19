@@ -9,7 +9,7 @@ export class Jugador {
     terminoJugada: boolean;
     perdio: boolean;
 
-    constructor (usuarioId:number, nombre: string, mano: Carta[], puntos: number, esCroupier: boolean, terminoJugada: boolean, perdio: boolean) {
+    constructor(usuarioId: number, nombre: string, mano: Carta[], puntos: number, esCroupier: boolean, terminoJugada: boolean, perdio: boolean) {
         this.usuarioId = usuarioId
         this.nombre = nombre;
         this.mano = mano;
@@ -19,22 +19,22 @@ export class Jugador {
         this.perdio = perdio;
     }
 
-    agregarCarta(carta: Carta): void{
+    agregarCarta(carta: Carta): void {
         this.mano.push(carta);
         this.chequearCondicion();
         this.puntos = this.calcularPuntos();
     }
 
-    calcularPuntos(): number{
+    calcularPuntos(): number {
         let acumulador: number = 0;
         this.mano.forEach(carta => {
-            acumulador += carta.valorNumerico; 
+            acumulador += carta.valorNumerico;
         });
         return acumulador;
     }
 
-    chequearPlantadoForzado() : boolean {
-        if(this.esCroupier){
+    chequearPlantadoForzado(): boolean {
+        if (this.esCroupier) {
             return this.calcularPuntos() > 16;
         } else {
             return this.calcularPuntos() === 21;
@@ -42,13 +42,13 @@ export class Jugador {
     }
 
     chequearCondicion(): void {
-        if(this.calcularPuntos() > 21){
-          for (let carta of this.mano) {
-            if (carta.valorNumerico === 11){
-                carta.valorNumerico = 1;
-                this.terminoJugada = this.chequearPlantadoForzado();  //Failsafe por si la ultima carta pedida es un as
-                return;
-              }    
+        if (this.calcularPuntos() > 21) {
+            for (let carta of this.mano) {
+                if (carta.valorNumerico === 11) {
+                    carta.valorNumerico = 1;
+                    this.terminoJugada = this.chequearPlantadoForzado();  //Failsafe por si la ultima carta pedida es un as
+                    return;
+                }
             }
             this.perdio = true;
             this.terminoJugada = true;
@@ -69,4 +69,4 @@ export class Jugador {
     }
 }
 
-export type CroupierDTO = Pick<Jugador, 'mano' | 'puntos' | 'perdio' >;
+export type CroupierDTO = Pick<Jugador, 'mano' | 'puntos' | 'perdio'>;

@@ -89,7 +89,7 @@ export class CasinoService {
 
         this.partidas[indice].nuevaRonda();
         return this.getById(id);
-    } 
+    }
 
     terminarPartida(id: number): boolean {
         const indice = this.partidas.findIndex(p => { return p.idPartida == id });
@@ -111,7 +111,7 @@ export class CasinoService {
     }
 
     getPartidaActiva(idUsuario: number): PartidaDTO[] | undefined {
-        const indice = this.partidas.findIndex(p => { return p.jugador.usuarioId == idUsuario && p.activo});
+        const indice = this.partidas.findIndex(p => { return p.jugador.usuarioId == idUsuario && p.activo });
         if (indice == -1) {
             return undefined;
         }
@@ -119,12 +119,12 @@ export class CasinoService {
         return this.getById(this.partidas[indice].idPartida)
     }
 
-    chequearUsuarioJugando(idUsuario: number) : boolean {
-        const indice = this.partidas.findIndex(p => { return p.jugador.usuarioId == idUsuario});
+    chequearUsuarioJugando(idUsuario: number): boolean {
+        const indice = this.partidas.findIndex(p => { return p.jugador.usuarioId == idUsuario });
         if (indice == -1) {
             return false;
         } else {
             return true;
         }
-    } 
+    }
 }

@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const router = express.Router();
 
 router.get('/', verifyToken, (req: any, res: any) => {
-    if (!req.data){
+    if (!req.data) {
         res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
         return;
     }
@@ -17,7 +17,7 @@ router.get('/', verifyToken, (req: any, res: any) => {
 })
 
 router.get('/:id', verifyToken, (req: any, res: any) => {
-    if (!req.data){
+    if (!req.data) {
         res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
         return;
     }
@@ -38,7 +38,7 @@ router.post('/iniciarSesion', (req, res) => {
     let x = usuarioServices.login(usuario, contrasenia);
     if (x.length > 0) {
         let data = JSON.stringify(x[0]);
-        const token: string = jwt.sign(data, "blackjacksecretkey");     
+        const token: string = jwt.sign(data, "blackjacksecretkey");
         res.status(200).json({
             "ok": true,
             "resultado": token
@@ -58,8 +58,8 @@ function verifyToken(req: any, res: any, next: any) {
     if (token === '' || token === null) {
         return res.status(401).json({ "ok": false, "mensaje": "Token vacío" });
     }
-    let contenido = jwt.verify(token, 'blackjacksecretkey', (err: any, decoded:any ) => {
-        if (err){
+    let contenido = jwt.verify(token, 'blackjacksecretkey', (err: any, decoded: any) => {
+        if (err) {
             return undefined;
         } else {
             return decoded;

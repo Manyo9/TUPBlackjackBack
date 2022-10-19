@@ -13,7 +13,7 @@ export function mezclarFisherYates(mazo: Carta[]): void {
       mazo[rand], mazo[indice]];
   }
 }
-      
+
 export function prepararMazo(): Carta[] {
   let mazo: Carta[] = [];
   for (let p = 0; p < 4; p++) {
@@ -61,7 +61,7 @@ export function prepararMazo(): Carta[] {
   return mazo;
 }
 
-export function prepararVariosMazos(n: number): Carta[]{
+export function prepararVariosMazos(n: number): Carta[] {
   let muchosMazos: Carta[] = [];
   for (let i = 0; i < n; i++) {
     muchosMazos = muchosMazos.concat(prepararMazo());

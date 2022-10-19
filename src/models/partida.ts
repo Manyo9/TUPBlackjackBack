@@ -48,18 +48,19 @@ export class Partida {
   tomarCartaJugador = (): Carta => {
     const carta = this.getUnaCarta();
     this.jugador.agregarCarta(carta);
-    return carta }
+    return carta
+  }
 
   tieneBlackjack = (jugador: Jugador): boolean => jugador.puntos === 21 && jugador.mano.length === 2
 
-  generarJugadaCroupier(){
+  generarJugadaCroupier() {
     this.turnoCroupier = true;
     while (!this.croupier.terminoJugada) {
       this.croupier.agregarCarta(this.getUnaCarta());
     }
   }
 
-  obtenerPrimeraCroupier(): Carta{
+  obtenerPrimeraCroupier(): Carta {
     this.croupier.agregarCarta(this.getUnaCarta());
     return this.croupier.mano[0];
   }
@@ -102,7 +103,7 @@ export class Partida {
     }
   }
 
-  nuevaRonda(){
+  nuevaRonda() {
     this.jugador.reiniciarJugador();
     this.croupier.reiniciarJugador();
     this.turnoCroupier = false;
