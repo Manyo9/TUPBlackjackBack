@@ -23,12 +23,19 @@ router.get('/porId/:id', verifyToken, (req: any, res: any) => {
         res.status(401).json({ "ok": false, "mensaje": "Token inválido." });
         return;
     }
+    const idPart = req.params['id'];
+    const idUsu = req.data.id;
 
-    const x = casinoService.getById(req.params['id'])
+    if (!(req.data.rol == 'admin' || casinoService.chequearUsuarioPartida(idPart, idUsu))) {
+        req.status(403).json({ "ok": false, "mensaje": `Usted no tiene los permisos requeridos para acceder a este recurso` })
+        return;
+    }
+
+    const x = casinoService.getById(idPart)
     if (x.length > 0) {
         res.status(200).json({ "ok": true, "resultado": x[0] });
     } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${idPart}` });
     }
 });
 
