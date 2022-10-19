@@ -63,12 +63,19 @@ router.get('/:id/pedirCarta', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const id = req.params['id'];
-    const carta = casinoService.pedirCarta(id);
+    const idPart = req.params['id'];
+    const idUsu = req.data.id;
+
+    if (!(req.data.rol == 'admin' || casinoService.chequearUsuarioPartida(idPart, idUsu))) {
+        req.status(403).json({ "ok": false, "mensaje": `Usted no tiene los permisos requeridos para acceder a este recurso` })
+        return;
+    }
+
+    const carta = casinoService.pedirCarta(idPart);
     if (carta) {
         res.status(200).json({ "ok": true, "resultado": carta });
     } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${idPart}` });
     }
 });
 
@@ -78,12 +85,19 @@ router.post('/:id/plantarse', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const id = req.params['id'];
-    const exito = casinoService.plantarJugador(id);
+    const idPart = req.params['id'];
+    const idUsu = req.data.id;
+
+    if (!(req.data.rol == 'admin' || casinoService.chequearUsuarioPartida(idPart, idUsu))) {
+        req.status(403).json({ "ok": false, "mensaje": `Usted no tiene los permisos requeridos para acceder a este recurso` })
+        return;
+    }
+
+    const exito = casinoService.plantarJugador(idPart);
     if (exito) {
         res.status(200).json({ "ok": true, "mensaje": "Te plantaste con éxito" });
     } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${idPart}` });
     }
 });
 
@@ -93,12 +107,19 @@ router.get('/:id/jugadaCroupier', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const id = req.params['id'];
-    const croupier = casinoService.generarJugadaCroupier(id);
+    const idPart = req.params['id'];
+    const idUsu = req.data.id;
+
+    if (!(req.data.rol == 'admin' || casinoService.chequearUsuarioPartida(idPart, idUsu))) {
+        req.status(403).json({ "ok": false, "mensaje": `Usted no tiene los permisos requeridos para acceder a este recurso` })
+        return;
+    }
+
+    const croupier = casinoService.generarJugadaCroupier(idPart);
     if (croupier && croupier.length > 0) {
         res.status(200).json({ "ok": true, "resultado": croupier[0] });
     } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${idPart}` });
     }
 });
 
@@ -108,12 +129,19 @@ router.get('/:id/primeraCartaCroupier', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const id = req.params['id'];
-    const carta = casinoService.obtenerPrimeraCroupier(id);
+    const idPart = req.params['id'];
+    const idUsu = req.data.id;
+
+    if (!(req.data.rol == 'admin' || casinoService.chequearUsuarioPartida(idPart, idUsu))) {
+        req.status(403).json({ "ok": false, "mensaje": `Usted no tiene los permisos requeridos para acceder a este recurso` })
+        return;
+    }
+
+    const carta = casinoService.obtenerPrimeraCroupier(idPart);
     if (carta) {
         res.status(200).json({ "ok": true, "resultado": carta });
     } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${idPart}` });
     }
 });
 
@@ -123,12 +151,19 @@ router.post('/:id/nuevaRonda', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const id = req.params['id'];
-    const partida = casinoService.jugarNuevaRonda(id);
+    const idPart = req.params['id'];
+    const idUsu = req.data.id;
+
+    if (!(req.data.rol == 'admin' || casinoService.chequearUsuarioPartida(idPart, idUsu))) {
+        req.status(403).json({ "ok": false, "mensaje": `Usted no tiene los permisos requeridos para acceder a este recurso` })
+        return;
+    }
+
+    const partida = casinoService.jugarNuevaRonda(idPart);
     if (partida && partida.length > 0) {
         res.status(200).json({ "ok": true, "resultado": partida[0] });
     } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${idPart}` });
     }
 });
 
@@ -138,12 +173,19 @@ router.post('/:id/terminarPartida', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const id = req.params['id'];
-    const exito = casinoService.terminarPartida(id);
+    const idPart = req.params['id'];
+    const idUsu = req.data.id;
+
+    if (!(req.data.rol == 'admin' || casinoService.chequearUsuarioPartida(idPart, idUsu))) {
+        req.status(403).json({ "ok": false, "mensaje": `Usted no tiene los permisos requeridos para acceder a este recurso` })
+        return;
+    }
+
+    const exito = casinoService.terminarPartida(idPart);
     if (exito) {
         res.status(200).json({ "ok": true, "mensaje": "Gracias por jugar!" });
     } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${idPart}` });
     }
 });
 
@@ -153,12 +195,19 @@ router.get('/:id/obtenerGanador', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const id = req.params['id'];
-    const resultado = casinoService.obtenerGanador(id);
+    const idPart = req.params['id'];
+    const idUsu = req.data.id;
+
+    if (!(req.data.rol == 'admin' || casinoService.chequearUsuarioPartida(idPart, idUsu))) {
+        req.status(403).json({ "ok": false, "mensaje": `Usted no tiene los permisos requeridos para acceder a este recurso` })
+        return;
+    }
+
+    const resultado = casinoService.obtenerGanador(idPart);
     if (resultado) {
         res.status(200).json({ "ok": true, "resultado": resultado });
     } else {
-        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${req.params['id']}` });
+        res.status(404).json({ "ok": false, "mensaje": `No se encontró la partida con el id ${idPart}` });
     }
 });
 
