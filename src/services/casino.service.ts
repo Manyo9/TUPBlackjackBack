@@ -40,7 +40,7 @@ export class CasinoService {
     }
 
     pedirCarta(id: number): Carta | undefined {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id && p.jugador.terminoJugada == false });
+        const indice = this.partidas.findIndex(p => p.idPartida == id && p.jugador.terminoJugada == false );
         if (indice == -1) {
             return undefined;
         }
@@ -48,7 +48,7 @@ export class CasinoService {
     }
 
     plantarJugador(id: number): boolean {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        const indice = this.partidas.findIndex(p => p.idPartida == id);
         if (indice == -1) {
             return false;
         } else {
@@ -58,7 +58,7 @@ export class CasinoService {
     }
 
     obtenerPrimeraCroupier(id: number): Carta | undefined {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        const indice = this.partidas.findIndex(p => p.idPartida == id );
         if (indice == -1) {
             return undefined;
         }
@@ -68,7 +68,7 @@ export class CasinoService {
     }
 
     generarJugadaCroupier(id: number): CroupierDTO[] | undefined {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        const indice = this.partidas.findIndex(p => p.idPartida == id );
         if (indice == -1) {
             return undefined;
         }
@@ -82,7 +82,7 @@ export class CasinoService {
     }
 
     jugarNuevaRonda(id: number): PartidaDTO[] | undefined {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        const indice = this.partidas.findIndex(p => p.idPartida == id );
         if (indice == -1) {
             return undefined;
         }
@@ -92,7 +92,7 @@ export class CasinoService {
     }
 
     terminarPartida(id: number): boolean {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        const indice = this.partidas.findIndex(p => p.idPartida == id );
         if (indice == -1) {
             return false;
         }
@@ -102,7 +102,7 @@ export class CasinoService {
     }
 
     obtenerGanador(id: number): any {
-        const indice = this.partidas.findIndex(p => { return p.idPartida == id });
+        const indice = this.partidas.findIndex(p => p.idPartida == id);
         if (indice == -1) {
             return false;
         }
@@ -111,7 +111,7 @@ export class CasinoService {
     }
 
     getPartidaActiva(idUsuario: number): PartidaDTO[] | undefined {
-        const indice = this.partidas.findIndex(p => { return p.jugador.usuarioId == idUsuario && p.activo });
+        const indice = this.partidas.findIndex(p => p.jugador.usuarioId == idUsuario && p.activo );
         if (indice == -1) {
             return undefined;
         }
@@ -119,8 +119,8 @@ export class CasinoService {
         return this.getById(this.partidas[indice].idPartida)
     }
 
-    chequearUsuarioJugando(idUsuario: number): boolean {
-        const indice = this.partidas.findIndex(p => { return p.jugador.usuarioId == idUsuario });
+    chequearUsuarioPartida(idPartida: number, idUsuario: number): boolean {
+        const indice = this.partidas.findIndex(p => p.idPartida == idPartida && p.jugador.usuarioId == idUsuario);
         if (indice == -1) {
             return false;
         } else {
