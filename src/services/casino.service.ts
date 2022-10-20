@@ -8,7 +8,7 @@ export class CasinoService {
 
     private constructor() { }
 
-    public static getInstancia(): CasinoService {
+    public static obtenerInstancia(): CasinoService {
         if (!this._instancia) {
             this._instancia = new this();
             return this._instancia;
@@ -17,16 +17,16 @@ export class CasinoService {
         }
     }
 
-    getPartidas = (): PartidaDTO[] => this.partidas;
+    traerPartidas = (): PartidaDTO[] => this.partidas;
 
-    getById = (id: number): PartidaDTO[] => {
+    traerPorId = (id: number): PartidaDTO[] => {
         const p = this.partidas.filter(p => p.idPartida == id)
         return p.map(({ idPartida, jugador, croupier, activo, turnoCroupier }) => {
             return { idPartida, jugador, croupier, activo, turnoCroupier }
         })
     }
 
-    newPartida = (idJugador: number, nombre: string): number => {
+    nuevaPartida = (idJugador: number, nombre: string): number => {
         let partida = new Partida(
             this.partidas.length + 1,
             [],
@@ -88,7 +88,7 @@ export class CasinoService {
         }
 
         this.partidas[indice].nuevaRonda();
-        return this.getById(id);
+        return this.traerPorId(id);
     }
 
     terminarPartida(id: number): boolean {
@@ -110,13 +110,13 @@ export class CasinoService {
         return this.partidas[indice].determinarGanador();
     }
 
-    getPartidaActiva(idUsuario: number): PartidaDTO[] | undefined {
+    buscarPartidaActiva(idUsuario: number): PartidaDTO[] | undefined {
         const indice = this.partidas.findIndex(p => p.jugador.usuarioId == idUsuario && p.activo );
         if (indice == -1) {
             return undefined;
         }
 
-        return this.getById(this.partidas[indice].idPartida)
+        return this.traerPorId(this.partidas[indice].idPartida)
     }
 
     chequearUsuarioPartida(idPartida: number, idUsuario: number): boolean {

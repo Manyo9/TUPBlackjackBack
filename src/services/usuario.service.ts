@@ -2,23 +2,23 @@ import { Usuario, UsuarioSinPass } from '../models/usuario';
 import usuariosData from './usuarios.json';
 
 const usuarios: Usuario[] = usuariosData;
-export const getUsuarios = () => usuarios;
+export const traerUsuarios = () => usuarios;
 
-export const getUsuariosSinPass = (): UsuarioSinPass[] => {
+export const traerUsuariosSinPass = (): UsuarioSinPass[] => {
     return usuarios.map(({ id, rol, usuario }) => {
         return { id, rol, usuario }
     });
 }
 
-export const getById = (id: number): UsuarioSinPass[] => {
+export const traerPorId = (id: number): UsuarioSinPass[] => {
     const u = usuarios.filter(x => x.id == id);
     return u.map(({ id, rol, usuario }) => {
         return { id, rol, usuario }
     });
 }
 
-export const login = (usu: string, cont: string): UsuarioSinPass[] => {
-    const u = usuarios.filter(x => x.usuario === usu && x.contrasenia === cont);
+export const iniciarSesion = (usuario: string, contraseña: string): UsuarioSinPass[] => {
+    const u = usuarios.filter(x => x.usuario === usuario && x.contrasenia === contraseña);
     return u.map(({ id, rol, usuario }) => {
         return { id, rol, usuario }
     });

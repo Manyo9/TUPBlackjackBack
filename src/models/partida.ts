@@ -24,7 +24,7 @@ export class Partida {
     this.turnoCroupier = false;
   }
 
-  getUnaCarta = (): any => {
+  obtenerUnaCarta = (): any => {
     let c;
     if (this.mazo.length > 0) {
       c = this.mazo.pop();
@@ -46,7 +46,7 @@ export class Partida {
   mezclar = (): void => { barajador.mezclarFisherYates(this.mazo); }
 
   tomarCartaJugador = (): Carta => {
-    const carta = this.getUnaCarta();
+    const carta = this.obtenerUnaCarta();
     this.jugador.agregarCarta(carta);
     return carta
   }
@@ -56,12 +56,12 @@ export class Partida {
   generarJugadaCroupier() {
     this.turnoCroupier = true;
     while (!this.croupier.terminoJugada) {
-      this.croupier.agregarCarta(this.getUnaCarta());
+      this.croupier.agregarCarta(this.obtenerUnaCarta());
     }
   }
 
   obtenerPrimeraCroupier(): Carta {
-    this.croupier.agregarCarta(this.getUnaCarta());
+    this.croupier.agregarCarta(this.obtenerUnaCarta());
     return this.croupier.mano[0];
   }
 

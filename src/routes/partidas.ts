@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
-const casinoService: CasinoService = CasinoService.getInstancia();
+const casinoService: CasinoService = CasinoService.obtenerInstancia();
 
 router.get('/', verifyToken, (req: any, res: any) => {
     if (!req.data) {
@@ -12,7 +12,7 @@ router.get('/', verifyToken, (req: any, res: any) => {
         return;
     }
     if (req.data.rol == 'admin') {
-        res.status(200).json({ "ok": true, "resultado": casinoService.getPartidas() });
+        res.status(200).json({ "ok": true, "resultado": casinoService.traerPartidas() });
     } else {
         res.status(403).json({ "ok": false, "mensaje": "Usted no tiene los permisos requeridos para acceder a este recurso." });
     }
@@ -31,7 +31,7 @@ router.get('/porId/:id', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const x = casinoService.getById(idPart)
+    const x = casinoService.traerPorId(idPart)
     if (x.length > 0) {
         res.status(200).json({ "ok": true, "resultado": x[0] });
     } else {
@@ -47,8 +47,8 @@ router.post('/nueva', verifyToken, (req: any, res: any) => {
 
     const id = req.data.id;
     const nombre = req.data.usuario;
-    const partidaId = casinoService.newPartida(id, nombre);
-    const partida = casinoService.getById(partidaId);
+    const partidaId = casinoService.nuevaPartida(id, nombre);
+    const partida = casinoService.traerPorId(partidaId);
     if (partida.length > 0) {
         res.status(200).json({ "ok": true, "mensaje": `Creada con éxito con id ${partidaId}`, "resultado": partida[0] });
     } else {
@@ -217,7 +217,7 @@ router.get('/partidaActiva', verifyToken, (req: any, res: any) => {
         return;
     }
 
-    const resultado = casinoService.getPartidaActiva(req.data.id);
+    const resultado = casinoService.buscarPartidaActiva(req.data.id);
     if (resultado && resultado.length > 0) {
         res.status(200).json({ "ok": true, "resultado": resultado[0] });
     } else {
