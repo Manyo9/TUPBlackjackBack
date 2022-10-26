@@ -17,3 +17,5 @@ mysqlConnecction.connect(err => {
         console.log('DB OK')
     }
 });
+
+export default mysqlConnecction;

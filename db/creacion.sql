@@ -54,3 +54,17 @@ create table Resultados(
     primary key (id),
     foreign key (idPartida) references Partidas(id)
 );
+DELIMITER //
+
+CREATE PROCEDURE spIniciarSesion(
+    IN usuario VARCHAR(32),
+    IN contrasenia VARCHAR(60)
+)
+BEGIN
+    SELECT u.id, r.nombre as rol, u.usuario 
+	FROM usuarios u
+	join roles r on r.id = u.idRol
+	where u.usuario = usuario and u.contrasenia = contrasenia;
+END //
+
+DELIMITER ;
