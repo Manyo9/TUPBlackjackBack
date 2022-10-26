@@ -1,6 +1,9 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 import { CasinoService } from '../services/casino.service';
 import jwt from 'jsonwebtoken';
+
 
 const router = express.Router();
 
@@ -232,7 +235,7 @@ function verifyToken(req: any, res: any, next: any) {
     if (token === '' || token === null) {
         return res.status(401).json({ "ok": false, "mensaje": "Token vacío" });
     }
-    let contenido = jwt.verify(token, 'blackjacksecretkey', (err: any, decoded: any) => {
+    let contenido = jwt.verify(token, process.env.SECRET_KEY as string, (err: any, decoded: any) => {
         if (err) {
             return undefined;
         } else {
