@@ -8,8 +8,8 @@ express jsonwebtoken cors mysql dotenv
 ## Para correr en modo desarrollo
 `npm install`
 
-Configurar .env
-Crear DB  
+Configurar .env  
+Crear DB
   
 `npm run dev`
 
