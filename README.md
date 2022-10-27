@@ -9,7 +9,7 @@ express jsonwebtoken cors mysql dotenv
 `npm install`
 
 Configurar .env
-Crear DB
+Crear DB  
   
 `npm run dev`
 
