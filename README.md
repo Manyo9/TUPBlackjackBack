@@ -6,7 +6,10 @@ En desarrollo: typescript @types/express ts-node-dev @types/jsonwebtoken @types/
 express jsonwebtoken cors mysql dotenv
 
 ## Para correr en modo desarrollo
-`npm install`  
+`npm install`
+
+Configurar .env
+  
 `npm run dev`
 
 ## Los archivos para crear la DB están en:
