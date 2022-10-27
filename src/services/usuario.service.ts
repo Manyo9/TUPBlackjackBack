@@ -5,17 +5,22 @@ import mysqlConnecction from '../connection/connection';
 const usuarios: Usuario[] = usuariosData;
 export const traerUsuarios = () => usuarios;
 
-export const traerUsuariosSinPass = (): UsuarioSinPass[] => {
-    return usuarios.map(({ id, rol, usuario }) => {
-        return { id, rol, usuario }
-    });
+export const traerUsuariosSinPass = (): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        mysqlConnecction.query('call spObtenerUsuarios()', (err, res) => {
+          if (err) reject(err)
+          else resolve(res)
+        })
+      })
 }
 
-export const traerPorId = (id: number): UsuarioSinPass[] => {
-    const u = usuarios.filter(x => x.id == id);
-    return u.map(({ id, rol, usuario }) => {
-        return { id, rol, usuario }
-    });
+export const traerPorId = (id: number): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        mysqlConnecction.query('call spObtenerUsuarioPorId(?)', id, (err, res) => {
+          if (err) reject(err)
+          else resolve(res)
+        })
+      })
 }
 
 export const iniciarSesion = async (usuario: string, contraseña: string): Promise<any> => {

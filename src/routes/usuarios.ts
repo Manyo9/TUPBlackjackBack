@@ -12,7 +12,19 @@ router.get('/', verifyToken, (req: any, res: any) => {
         return;
     }
     if (req.data.rol == 'admin') {
-        res.status(200).json({ "ok": true, "resultado": usuarioServices.traerUsuariosSinPass() });
+        usuarioServices.traerUsuariosSinPass()
+        .catch((e) => {
+            res.status(500).json({
+                "ok": false,
+                "mensaje": "Error en la db"
+            });
+            console.error(e);
+        })
+        .then((x) => {
+            x = x[0];
+            res.status(200).json({ "ok": true, "resultado": x });
+        })
+        
     } else {
         res.status(403).json({ "ok": false, "mensaje": "Usted no tiene los permisos requeridos para acceder a este recurso." });
     }
@@ -24,12 +36,24 @@ router.get('/:id', verifyToken, (req: any, res: any) => {
         return;
     }
     if (req.data.id == req.params['id'] || req.data.rol === 'admin') {
-        const x = usuarioServices.traerPorId(req.params['id'])
-        if (x.length > 0) {
-            res.status(200).json({ "ok": true, "resultado": x });
-        } else {
-            res.status(404).json({ "ok": false, "resultado": [] });
-        }
+        usuarioServices.traerPorId(req.params['id'])
+        .catch((e) => {
+            res.status(500).json({
+                "ok": false,
+                "mensaje": "Error en la db"
+            });
+            console.error(e);
+        })
+        .then((x) => {
+            x = x[0];
+            if (x.length > 0) {
+                res.status(200).json({ "ok": true, "resultado": x });
+            } else {
+                res.status(404).json({ "ok": false, "resultado": [] });
+            }
+        })
+        
+
     } else {
         res.status(403).json({ "ok": false, "mensaje": "Usted no tiene los permisos requeridos para acceder a este recurso." });
     }
@@ -37,16 +61,17 @@ router.get('/:id', verifyToken, (req: any, res: any) => {
 
 router.post('/iniciarSesion', (req, res) => {
     const { usuario, contrasenia } = req.body;
-    let p = usuarioServices.iniciarSesion(usuario, contrasenia);
-    p.catch((e) => {
+    usuarioServices.iniciarSesion(usuario, contrasenia)
+    .catch((e) => {
         res.status(500).json({
             "ok": false,
             "mensaje": "Error en la db"
         });
         console.error(e);
     })
-    p.then((x) => {
-        x = JSON.parse(JSON.stringify(x))[0];
+    .then((x) => {
+        x = x[0];
+        console.log(x);
         if (x.length > 0) {
             let data = JSON.stringify(x[0]);
             const token: string = jwt.sign(data, process.env.SECRET_KEY as string);
