@@ -67,4 +67,23 @@ BEGIN
 	where u.usuario = usuario and u.contrasenia = contrasenia;
 END //
 
+CREATE PROCEDURE spObtenerUsuarios(
+)
+BEGIN
+    SELECT u.id, r.nombre as rol, u.usuario 
+    FROM usuarios u
+    join roles r on r.id = u.idRol;
+END //
+
+CREATE PROCEDURE spObtenerUsuarioPorId(
+    IN id int
+)
+BEGIN
+    SELECT u.id, r.nombre as rol, u.usuario 
+    FROM usuarios u
+    join roles r on r.id = u.idRol
+    where u.id = id;
+END //
+
+
 DELIMITER ;
