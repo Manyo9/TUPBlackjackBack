@@ -37,20 +37,31 @@ router.get('/:id', verifyToken, (req: any, res: any) => {
 
 router.post('/iniciarSesion', (req, res) => {
     const { usuario, contrasenia } = req.body;
-    let x = usuarioServices.iniciarSesion(usuario, contrasenia);
-    if (x.length > 0) {
-        let data = JSON.stringify(x[0]);
-        const token: string = jwt.sign(data, process.env.SECRET_KEY as string);
-        res.status(200).json({
-            "ok": true,
-            "resultado": token
-        });
-    } else {
-        res.status(200).json({
+    let p = usuarioServices.iniciarSesion(usuario, contrasenia);
+    p.catch((e) => {
+        res.status(500).json({
             "ok": false,
-            "mensaje": "Usuario y/o contraseña incorrectos"
+            "mensaje": "Error en la db"
         });
-    }
+        console.error(e);
+    })
+    p.then((x) => {
+        x = JSON.parse(JSON.stringify(x))[0];
+        if (x.length > 0) {
+            let data = JSON.stringify(x[0]);
+            const token: string = jwt.sign(data, process.env.SECRET_KEY as string);
+            res.status(200).json({
+                "ok": true,
+                "resultado": token
+            });
+        } else {
+            res.status(200).json({
+                "ok": false,
+                "mensaje": "Usuario y/o contraseña incorrectos"
+            });
+        }
+    })
+   
 });
 
 function verifyToken(req: any, res: any, next: any) {

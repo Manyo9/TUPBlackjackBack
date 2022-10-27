@@ -18,24 +18,11 @@ export const traerPorId = (id: number): UsuarioSinPass[] => {
     });
 }
 
-export const iniciarSesion = (usuario: string, contraseña: string): UsuarioSinPass[] => {
-    // const u = usuarios.filter(x => x.usuario === usuario && x.contrasenia === contraseña);
-    mysqlConnecction.query('call sp_IniciarSesion(?,?)', [usuario,contraseña], 
-    (err,rows,fields) => {
-        if(!err){
-            if(rows.length > 0){
-                let data = JSON.stringify(rows[0]);
-                return data;
-            } else {
-                return [];
-            }
-        } else {
-            console.log(err);
-            return [];
-        }
-    })
-    return [];
-    // return u.map(({ id, rol, usuario }) => {
-    //     return { id, rol, usuario }
-    // });
+export const iniciarSesion = async (usuario: string, contraseña: string): Promise<any> => {
+    return new Promise((resolve, reject) => {
+        mysqlConnecction.query('call spIniciarSesion(?,?)', [usuario,contraseña], (err, res) => {
+          if (err) reject(err)
+          else resolve(res)
+        })
+      })
 }
