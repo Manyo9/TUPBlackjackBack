@@ -107,5 +107,29 @@ BEGIN
     join partidas p on r.idPartida = p.id
     into cantidadPartidas, cantidadJugadores;
 END //
+	
+CREATE PROCEDURE spPromedioVentiuno(
+	OUT promVentiunoCroupier float,
+    OUT promVentiunoJugadores float
+)
+BEGIN
+	DECLARE cant21C int;
+    DECLARE cant21J int;
+    DECLARE total int;
+    select count(puntajeCroupier) from resultados where puntajeCroupier = 21 into cant21C;
+    select count(puntajeJugador) from resultados where puntajeJugador = 21 into cant21J;
+    select count(*) from resultados into total;
+    IF (total > 0) THEN
+		BEGIN
+			SET promVentiunoCroupier := ROUND(cant21C/total, 3);
+            SET promVentiunoJugadores := ROUND(cant21J/total, 3);
+		END;
+    ELSE
+		BEGIN
+			SET promVentiunoCroupier := 0;
+			SET promVentiunoJugadores := 0;
+		END;
+	END IF;
+END //
 
 DELIMITER ;
