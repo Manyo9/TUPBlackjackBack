@@ -26,7 +26,7 @@ create table Resultados(
     ventiUnoJugador boolean,
 	fechaFinalizacion datetime,
     primary key (id),
-    foreign key (idPartida) references Partidas(id)
+    foreign key (idUsuario) references Usuarios(id)
 );
 DELIMITER //
 
