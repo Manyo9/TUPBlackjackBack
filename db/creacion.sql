@@ -109,8 +109,8 @@ BEGIN
 END //
 
 CREATE PROCEDURE spPromedioVentiuno(
-	OUT promVentiunoCroupier float,
-    OUT promVentiunoJugadores float
+	OUT promVentiunoCroupier decimal(4, 3),
+    OUT promVentiunoJugadores decimal(4, 3)
 )
 BEGIN
 	DECLARE cant21C int;
@@ -121,8 +121,8 @@ BEGIN
     select count(*) from resultados into total;
     IF (total > 0) THEN
 		BEGIN
-			SET promVentiunoCroupier := ROUND(cant21C/total, 3);
-            SET promVentiunoJugadores := ROUND(cant21J/total, 3);
+			SET promVentiunoCroupier := cant21C/total;
+            SET promVentiunoJugadores := cant21J/total;
 		END;
     ELSE
 		BEGIN
