@@ -7,14 +7,6 @@ create table Roles(
     primary key (id)
 );
 
-create table Cartas(
-    id int,
-    valorCarta varchar(2),
-    valorNumerico tinyint,
-    palo tinyint,
-    primary key (id)
-);
-
 
 create table Usuarios(
     id int auto_increment,
@@ -25,32 +17,14 @@ create table Usuarios(
     foreign key (idRol) references Roles(id)
 );
 
-create table Partidas(
-    id int auto_increment,
-    idJugador int,
-    activo boolean,
-    primary key (id),
-    foreign key (idJugador) references Usuarios(id)
-);
-
-create table Manos(
-    id int auto_increment,
-    idPartida int,
-    idUsuario int,
-    orden smallint,
-    idCarta int,
-    primary key (id),
-    foreign key (idPartida) references Partidas(id),
-    foreign key (idUsuario) references Usuarios(id),
-    foreign key (idUsuario) references Cartas(id)
-);
-
 create table Resultados(
     id int auto_increment,
     idPartida int,
+	idUsuario int,
     idGanador tinyint,
-    blackjackCroupier boolean,
-    blackjackJugador boolean,
+    puntajCroupier boolean,
+    ventiUnoJugador boolean,
+	fechaFinalizacion datetime,
     primary key (id),
     foreign key (idPartida) references Partidas(id)
 );
