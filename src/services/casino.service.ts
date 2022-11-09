@@ -79,10 +79,27 @@ export class CasinoService {
         if (indice == -1) {
             return undefined;
         }
-
-        this.partidas[indice].generarJugadaCroupier();
+        const partida = this.partidas[indice];
+        partida.generarJugadaCroupier();
         const p = this.partidas.filter(p => p.idPartida == id)
         const c: CroupierDTO[] = [p[0].croupier];
+        
+        //Insert de resultado en db
+        const ganador = partida.determinarGanador();   
+        let idEstadoGanador: number;
+        if (ganador.idGanador > 0) {
+            idEstadoGanador = 3;
+        } else if (ganador.idGanador == 0) {
+            idEstadoGanador = 2;
+        } else {
+            idEstadoGanador = 1;
+        }
+        mysqlConnecction.query('INSERT INTO resultados (idPartida, idEstadoGanador, puntajeCroupier, puntajeJugador, fechaFinalizacion) VALUES (?,?,?,?,?); SELECT last_insert_id() as id;', 
+        [partida.idPartida, idEstadoGanador, partida.croupier.puntos, partida.jugador.puntos, new Date()], (err, res) => {
+        }) 
+
+
+
         return c.map(({ mano, puntos, perdio }) => {
             return { mano, puntos, perdio }
         })
@@ -103,7 +120,6 @@ export class CasinoService {
         if (indice == -1) {
             return false;
         }
-
         this.partidas[indice].terminar();
         return true;
     }
@@ -115,17 +131,6 @@ export class CasinoService {
         }
         const partida = this.partidas[indice];
         const ganador = partida.determinarGanador();   
-        let idEstadoGanador: number;
-        if (ganador.idGanador > 0) {
-            idEstadoGanador = 3;
-        } else if (ganador.idGanador == 0) {
-            idEstadoGanador = 2;
-        } else {
-            idEstadoGanador = 1;
-        }
-        mysqlConnecction.query('INSERT INTO resultados (idPartida, idEstadoGanador, puntajeCroupier, puntajeJugador, fechaFinalizacion) VALUES (?,?,?,?,?); SELECT last_insert_id() as id;', 
-        [partida.idPartida, idEstadoGanador, partida.croupier.puntos, partida.jugador.puntos, new Date()], (err, res) => {
-        }) 
         return ganador;
     }
 
