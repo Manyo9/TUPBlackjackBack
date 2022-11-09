@@ -97,4 +97,15 @@ BEGIN
     group by idUsuario;
 END //
 
+CREATE PROCEDURE spCantidadJuegosJugadores(
+	OUT cantidadPartidas int,
+    OUT cantidadJugadores int
+)
+BEGIN
+	select count(distinct r.idPartida), count(distinct p.idUsuario)
+    from resultados r
+    join partidas p on r.idPartida = p.id
+    into cantidadPartidas, cantidadJugadores;
+END //
+
 DELIMITER ;
