@@ -26,11 +26,10 @@ export class CasinoService {
         })
     }
 
-    nuevaPartida = (idJugador: number, nombre: string): Promise<number> => {
-
+    nuevaPartida =  (idJugador: number, nombre: string): Promise<any> => {
         return new Promise((resolve, reject) => {
-            mysqlConnecction.query('INSERT INTO partidas (idJugador) VALUES (?); SELECT last_insert_id() as id;', [idJugador], (err, res) => {
-                console.log("Partida creada con ID: "+res[1][0].id)
+            mysqlConnecction.query('INSERT INTO partidas (idUsuario) VALUES (?); SELECT last_insert_id() as id;', [idJugador], (err, res) => {
+                console.log(res[1][0].id);
                 let partida = new Partida(
                     res[1][0].id,
                     [],
@@ -41,10 +40,11 @@ export class CasinoService {
                 partida.empezar();
                 this.partidas.push(partida);
                 if (err) reject(err)
-                else resolve(res[1][0])
+                else resolve(res[1][0].id)
             })
         })
-
+        
+    
     }
 
     pedirCarta(id: number): Carta | undefined {
