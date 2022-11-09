@@ -107,7 +107,7 @@ BEGIN
     join partidas p on r.idPartida = p.id
     into cantidadPartidas, cantidadJugadores;
 END //
-	
+
 CREATE PROCEDURE spPromedioVentiuno(
 	OUT promVentiunoCroupier float,
     OUT promVentiunoJugadores float
