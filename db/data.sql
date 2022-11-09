@@ -44,3 +44,6 @@ insert into resultados (idPartida, idEstadoGanador, puntajeCroupier, puntajeJuga
 # Gana croupier por mas puntos
 insert into resultados (idPartida, idEstadoGanador, puntajeCroupier, puntajeJugador, fechaFinalizacion) values
 (3, 2, 21, 20, DATE_SUB(NOW(), INTERVAL 4 HOUR));
+
+insert into resultados (idPartida, idEstadoGanador, puntajeCroupier, puntajeJugador, fechaFinalizacion) values 
+(3, 3, 28, 20, DATE_SUB(NOW(), INTERVAL 4 HOUR));

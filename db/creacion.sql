@@ -78,15 +78,23 @@ BEGIN
 END //
 
 CREATE PROCEDURE spIndiceResultados(
-	OUT victoriasCroupier int,
-    OUT victoriasJugador int,
-    OUT empates int
 )
 BEGIN
-	select r.id, r.idPartida, e.descripcion as ganador,
-    r.puntajeCroupier, r.puntajeJugador, r.fechaFinalizacion
+	select count(e.descripcion) as cantidadVictorias, e.descripcion as ganador
     from resultados r 
-    join estadoGanador e on r.idEstadoGanador = e.id;
+    join estadoGanador e on r.idEstadoGanador = e.id
+    group by ganador;
+END //
+
+CREATE PROCEDURE spCantidadVictoriasUsuario(
+)
+BEGIN
+	select count(p.idUsuario) as victorias, p.idUsuario, u.usuario
+    from resultados r
+    join partidas p on p.id = r.idPartida
+    join usuarios u on p.idUsuario = u.id
+    where idEstadoGanador = 3
+    group by idUsuario;
 END //
 
 DELIMITER ;
