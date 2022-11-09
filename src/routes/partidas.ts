@@ -50,13 +50,21 @@ router.post('/nueva', verifyToken, (req: any, res: any) => {
 
     const id = req.data.id;
     const nombre = req.data.usuario;
-    const partidaId = casinoService.nuevaPartida(id, nombre);
-    const partida = casinoService.traerPorId(partidaId);
-    if (partida.length > 0) {
-        res.status(200).json({ "ok": true, "mensaje": `Creada con éxito con id ${partidaId}`, "resultado": partida[0] });
-    } else {
-        res.status(500).json({ "ok": false, "mensaje": `Error al crear partida` });
-    }
+    casinoService.nuevaPartida(id, nombre)
+        .catch((e) => {
+            res.status(500).json({ "ok": false, "mensaje": `Error al crear partida` });
+            console.error(e);
+        })
+        .then((x) => {
+            
+            const partida = x? casinoService.traerPorId(x) : [];
+            if (partida.length > 0) {
+                res.status(200).json({ "ok": true, "mensaje": `Creada con éxito con id ${x}`, "resultado": partida[0] });
+            } else {
+                res.status(500).json({ "ok": false, "mensaje": `Error al crear partida` });
+            }
+        })
+    
 
 });
 

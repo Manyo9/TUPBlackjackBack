@@ -1,7 +1,7 @@
 import { Carta } from '../models/carta';
 import { CroupierDTO, Jugador } from '../models/jugador';
 import { Partida, PartidaDTO } from '../models/partida';
-
+import mysqlConnecction from '../connection/connection';
 export class CasinoService {
     private static _instancia: CasinoService;
     partidas: Partida[] = [];
@@ -26,21 +26,29 @@ export class CasinoService {
         })
     }
 
-    nuevaPartida = (idJugador: number, nombre: string): number => {
-        let partida = new Partida(
-            this.partidas.length + 1,
-            [],
-            new Jugador(idJugador, nombre, [], 0, false, false, false),
-            new Jugador(0, 'Croupier', [], 0, true, false, false)
-        )
-        partida.generarMazo(1);
-        partida.empezar();
-        this.partidas.push(partida);
-        return partida.idPartida;
+    nuevaPartida = (idJugador: number, nombre: string): Promise<number> => {
+
+        return new Promise((resolve, reject) => {
+            mysqlConnecction.query('INSERT INTO partidas (idJugador) VALUES (?); SELECT last_insert_id() as id;', [idJugador], (err, res) => {
+                console.log("Partida creada con ID: "+res[1][0].id)
+                let partida = new Partida(
+                    res[1][0].id,
+                    [],
+                    new Jugador(idJugador, nombre, [], 0, false, false, false),
+                    new Jugador(0, 'Croupier', [], 0, true, false, false)
+                )
+                partida.generarMazo(1);
+                partida.empezar();
+                this.partidas.push(partida);
+                if (err) reject(err)
+                else resolve(res[1][0])
+            })
+        })
+
     }
 
     pedirCarta(id: number): Carta | undefined {
-        const indice = this.partidas.findIndex(p => p.idPartida == id && p.jugador.terminoJugada == false );
+        const indice = this.partidas.findIndex(p => p.idPartida == id && p.jugador.terminoJugada == false);
         if (indice == -1) {
             return undefined;
         }
@@ -58,17 +66,16 @@ export class CasinoService {
     }
 
     obtenerPrimeraCroupier(id: number): Carta | undefined {
-        const indice = this.partidas.findIndex(p => p.idPartida == id );
+        const indice = this.partidas.findIndex(p => p.idPartida == id);
         if (indice == -1) {
             return undefined;
         }
-
         const c = this.partidas[indice].obtenerPrimeraCroupier();
         return c;
     }
 
     generarJugadaCroupier(id: number): CroupierDTO[] | undefined {
-        const indice = this.partidas.findIndex(p => p.idPartida == id );
+        const indice = this.partidas.findIndex(p => p.idPartida == id);
         if (indice == -1) {
             return undefined;
         }
@@ -82,7 +89,7 @@ export class CasinoService {
     }
 
     jugarNuevaRonda(id: number): PartidaDTO[] | undefined {
-        const indice = this.partidas.findIndex(p => p.idPartida == id );
+        const indice = this.partidas.findIndex(p => p.idPartida == id);
         if (indice == -1) {
             return undefined;
         }
@@ -92,7 +99,7 @@ export class CasinoService {
     }
 
     terminarPartida(id: number): boolean {
-        const indice = this.partidas.findIndex(p => p.idPartida == id );
+        const indice = this.partidas.findIndex(p => p.idPartida == id);
         if (indice == -1) {
             return false;
         }
@@ -106,12 +113,24 @@ export class CasinoService {
         if (indice == -1) {
             return false;
         }
-
-        return this.partidas[indice].determinarGanador();
+        const partida = this.partidas[indice];
+        const ganador = partida.determinarGanador();   
+        let idEstadoGanador: number;
+        if (ganador.idGanador > 0) {
+            idEstadoGanador = 3;
+        } else if (ganador.idGanador == 0) {
+            idEstadoGanador = 2;
+        } else {
+            idEstadoGanador = 1;
+        }
+        mysqlConnecction.query('INSERT INTO resultados (idPartida, idEstadoGanador, puntajeCroupier, puntajeJugador, fechaFinalizacion) VALUES (?,?,?,?,?); SELECT last_insert_id() as id;', 
+        [partida.idPartida, idEstadoGanador, partida.croupier.puntos, partida.jugador.puntos, new Date()], (err, res) => {
+        }) 
+        return ganador;
     }
 
     buscarPartidaActiva(idUsuario: number): PartidaDTO[] | undefined {
-        const indice = this.partidas.findIndex(p => p.jugador.usuarioId == idUsuario && p.activo );
+        const indice = this.partidas.findIndex(p => p.jugador.usuarioId == idUsuario && p.activo);
         if (indice == -1) {
             return undefined;
         }
