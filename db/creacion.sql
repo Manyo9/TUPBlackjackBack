@@ -7,7 +7,6 @@ create table Roles(
     primary key (id)
 );
 
-
 create table Usuarios(
     id int auto_increment,
     idRol int,
@@ -22,8 +21,8 @@ create table Resultados(
     idPartida int,
 	idUsuario int,
     idGanador tinyint,
-    puntajCroupier boolean,
-    ventiUnoJugador boolean,
+    puntajeCroupier tinyint,
+    puntajeJugador tinyint,
 	fechaFinalizacion datetime,
     primary key (id),
     foreign key (idUsuario) references Usuarios(id)
@@ -59,5 +58,10 @@ BEGIN
     where u.id = id;
 END //
 
+CREATE PROCEDURE spIndiceVictorias(
+)
+BEGIN
+	
+END //
 
 DELIMITER ;
