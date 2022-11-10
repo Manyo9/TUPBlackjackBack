@@ -71,7 +71,6 @@ router.post('/iniciarSesion', (req, res) => {
     })
     .then((x) => {
         x = x[0];
-        console.log(x);
         if (x.length > 0) {
             let data = JSON.stringify(x[0]);
             const token: string = jwt.sign(data, process.env.SECRET_KEY as string);

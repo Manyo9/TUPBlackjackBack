@@ -45,7 +45,6 @@ router.get('/promedioVeintiuno', verifyToken, (req: any, res: any) => {
             console.error(e);
         })
         .then((x) => {
-            console.log(x);
             const response = {
                 jugadores: x[1][0].jugadores,
                 croupier :  x[1][0].croupier

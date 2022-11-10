@@ -29,7 +29,6 @@ export class CasinoService {
     nuevaPartida =  (idJugador: number, nombre: string): Promise<any> => {
         return new Promise((resolve, reject) => {
             mysqlConnecction.query('INSERT INTO partidas (idUsuario) VALUES (?); SELECT last_insert_id() as id;', [idJugador], (err, res) => {
-                console.log(res[1][0].id);
                 let partida = new Partida(
                     res[1][0].id,
                     [],
