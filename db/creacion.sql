@@ -98,14 +98,12 @@ BEGIN
 END //
 
 CREATE PROCEDURE spCantidadJuegosJugadores(
-	OUT cantidadPartidas int,
-    OUT cantidadJugadores int
 )
 BEGIN
-	select count(distinct r.idPartida), count(distinct p.idUsuario)
+	select cast(r.fechaFinalizacion as date) as fecha, count(distinct r.idPartida) as juegos, count(distinct p.idUsuario) as jugadores
     from resultados r
     join partidas p on r.idPartida = p.id
-    into cantidadPartidas, cantidadJugadores;
+    group by fecha;
 END //
 
 CREATE PROCEDURE spPromedioVentiuno(
