@@ -94,7 +94,9 @@ BEGIN
     join partidas p on p.id = r.idPartida
     join usuarios u on p.idUsuario = u.id
     where idEstadoGanador = 3
-    group by idUsuario;
+    group by idUsuario
+    order by victorias
+    limit 5;
 END //
 
 CREATE PROCEDURE spCantidadJuegosJugadores(
